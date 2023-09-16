@@ -1,0 +1,26 @@
+digraph G {
+    rankdir = LR
+    
+    subgraph cluster_blockchain {
+        node [shape = record]
+        label = "Vote Blockchain Diagram"
+        
+        block0 [label = "\"Intitial Block\"|{Vote ID|Timestamp|Vote Options|Block ID: 0|Public Key}|<sig> Cryptographic Signature"];
+        block1 [label = "\"Vote Block\"|{<zkpp> N-1|Timestamp|Vote Option|Nonce|Block ID: 1}|<zkp> Zero-Knowledge Proof"];
+        block2 [label = "\"Vote Block\"|{<zkpp> N-1|Timestamp|Vote Option|Nonce|Block ID: 2}|<zkp> Zero-Knowledge Proof"];
+        block3a [label = "\"Single-Validation Block\"|{<mt> Merkle Tree Root|Timestamp|Nonce|Pass/Fail}|<zkp> Zero-Knowledge Proof"];
+        block4a [label = "\"Full-Validation Block\"|{<mt> Merkle Tree Root|Timestamp|Vote Results|Nonce|Public Key}|<sig> Cryptographic Signature"];
+        
+        chain_mt [label = "Merkle Tree"];
+        
+        block0:sig -> block1:zkpp;
+        block1:zkp -> block2:zkpp;
+        
+        block0:sig -> chain_mt;
+        block1:zkp -> chain_mt;
+        block2:zkp -> chain_mt;
+        
+        chain_mt -> block3a:mt;
+        chain_mt -> block4a:mt;
+    }
+}

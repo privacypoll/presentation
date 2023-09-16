@@ -1,0 +1,109 @@
+digraph G {
+    rankdir = LR
+    
+    #subgraph cluster_blockchain {
+    #    node [shape = record]
+    #    label = "Vote Blockchain Diagram"
+    #    
+    #    block0 [label = "\"Intitial Block\"|{Vote ID|Timestamp|Vote Options|Block ID: 0|Public Key}|<sig> Cryptographic Signature"];
+    #    block1 [label = "\"Vote Block\"|{<zkpp> N-1|Timestamp|Vote Option|Nonce|Block ID: 1}|<zkp> Zero-Knowledge Proof"];
+    #    block2 [label = "\"Vote Block\"|{<zkpp> N-1|Timestamp|Vote Option|Nonce|Block ID: 2}|<zkp> Zero-Knowledge Proof"];
+    #    block3a [label = "\"Single-Validation Block\"|{<mt> Merkle Tree Root|Timestamp|Nonce|Pass/Fail}|<zkp> Zero-Knowledge Proof"];
+    #    block4a [label = "\"Full-Validation Block\"|{<mt> Merkle Tree Root|Timestamp|Vote Results|Nonce|Public Key}|<sig> Cryptographic Signature"];
+    #    
+    #    chain_mt [label = "Merkle Tree"];
+    #    
+    #    block0:sig -> block1:zkpp;
+    #    block1:zkp -> block2:zkpp;
+    #    
+    #   block0:sig -> chain_mt;
+    #    block1:zkp -> chain_mt;
+    #    block2:zkp -> chain_mt;
+    #    
+    #    chain_mt -> block3a:mt;
+    #    chain_mt -> block4a:mt;
+    #}
+    
+    subgraph cluster_vote_server {
+        node [shape = record];
+        label = "Server Network";
+        
+        vs0 [label = "Voter ID Validator"];
+        vs1 [label = "Voter Database"];
+        
+        vs0 -> vs1;
+    }
+    
+    subgraph cluster_vote_creation {
+        #a0 [abel = ""];
+    }
+    
+    subgraph cluster_voter_registration {
+        node [shape = rectangle];
+        label = "Voter Registration"
+        
+        vr0 [label = "Official ID\ne.g. SSN"];
+        vr1 [label = "Voter ID\nECDSA Key"];
+        vr2 [label = "Voter ID representation\ne.g. QR-code or 12-word seed"]
+        
+        vr0 -> vr1 [label = "Derive"];
+        vr1 -> vs0;
+        
+        vr1 -> vr2;
+    }
+    
+    subgraph cluster_vote_casting {
+        node [shape = rectangle]
+        label = "Vote Casting"
+        
+        vc0 [label = "Vote Issuer Validation"];
+        vc1 [label = "Vote Option"];
+        vc2 [label = "ZKP Block Generation"];
+        vc3 [label = "Vote Receipt representation\ne.g. QR-code or 12-word seed"];
+        
+        vs1 -> vc0 [label = "Block 0"];
+        vr2 -> vc2;
+        vs1 -> vc2 [xlabel = "Block N-1\n& Voter Keyring"];
+        
+        vc0 -> vc1 -> vc2;
+        
+        vc2 -> vc3 [xlabel = "Block ID\n& ZKP"];
+    }
+    
+    subgraph cluster_vote_end {
+        node [shape = rectangle]
+        label = "Vote End"
+        
+        ve0 [label = "Assemble Merkle Tree"];
+        
+        vs1 -> ve0 -> vs1;
+    }
+    
+    subgraph cluster_single_validation {
+        node [shape = rectangle]
+        label = "Single-Validation"
+        
+        sv0 [label = "Validate Merkle Tree Path for Block ID"];
+        sv1 [label = "ZKP Block Generation"];
+        
+        vs1 -> sv0 [label = "Merkle Tree Root\n& Merkle Tree Path for Block ID"];
+        vr2 -> sv0;
+        vc3 -> sv0;
+        
+        sv0 -> sv1;
+        sv1 -> vs1;
+    }
+    
+    subgraph cluster_full_validation {
+        node [shape = rectangle]
+        label = "Full-Validation"
+        
+        fv0 [label = "Validate Blockchain"];
+        fv1 [label = "Signed Block Generation"]
+        
+        vs1 -> fv0 [label = "Merkle Tree Root\n& Blockchain"];
+        
+        fv0 -> fv1;
+        fv1 -> vs1;
+    }
+}
