@@ -40,7 +40,7 @@ digraph G {
         
         vs1 -> vc0 [label = "Block 0"];
         vr2 -> vc2;
-        vs1 -> vc2 [xlabel = "Block N-1\n& Voter Keyring"];
+        vs1 -> vc2 [dir = both, xlabel = "UP: Block N-1 & Voter Keyring\nDOWN: ZKP Block"];
         
         vc0 -> vc1 -> vc2;
         

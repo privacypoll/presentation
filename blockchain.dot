@@ -6,8 +6,8 @@ digraph G {
         label = "Vote Blockchain Diagram"
         
         block0 [label = "\"Intitial Block\"|{Vote ID|Timestamp|Vote Options|Block ID: 0|Public Key}|<sig> Cryptographic Signature"];
-        block1 [label = "\"Vote Block\"|{<zkpp> N-1|Timestamp|Vote Option|Nonce|Block ID: 1}|<zkp> Zero-Knowledge Proof"];
-        block2 [label = "\"Vote Block\"|{<zkpp> N-1|Timestamp|Vote Option|Nonce|Block ID: 2}|<zkp> Zero-Knowledge Proof"];
+        block1 [label = "\"Vote Block\"|{<zkpp> N-1|Timestamp|Vote Option|Nonce|Block ID: 1}|{<zkp> Zero-Knowledge Proof|ZKP(Vote ID)}"];
+        block2 [label = "\"Vote Block\"|{<zkpp> N-1|Timestamp|Vote Option|Nonce|Block ID: 2}|{<zkp> Zero-Knowledge Proof|ZKP(Vote ID)}"];
         block3a [label = "\"Single-Validation Block\"|{<mt> Merkle Tree Root|Timestamp|Nonce|Pass/Fail}|<zkp> Zero-Knowledge Proof"];
         block4a [label = "\"Full-Validation Block\"|{<mt> Merkle Tree Root|Timestamp|Vote Results|Nonce|Public Key}|<sig> Cryptographic Signature"];
         
